@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity">
+
+    <TextView
+        android:id="@+id/myMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="24dp"
+        android:text="My Music"
+        android:textColor="#828282"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iTunes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/library"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/iTunes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:text="ITunes"
+        android:textColor="#E0E0E0"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/library"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/library"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="17dp"
+        android:text="Library"
+        android:textColor="#828282"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iTunes"
+        app:layout_constraintEnd_toStartOf="@+id/myMusic"
+        app:layout_constraintStart_toEndOf="@+id/iTunes"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView2"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iTunes"
+        app:navGraph="@navigation/itunes_library_graph" />
+
+    <ImageView
+        android:id="@+id/imagePurchase"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginEnd="11dp"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentContainerView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/myMusic"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/premium_icon_off"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

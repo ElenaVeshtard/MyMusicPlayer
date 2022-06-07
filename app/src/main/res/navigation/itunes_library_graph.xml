@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itunes_library_graph"
+    app:startDestination="@id/ITunesMusicFragment">
+
+    <fragment
+        android:id="@+id/ITunesMusicFragment"
+        android:name="com.example.mymusicplayer.view.ITunesMusicFragment"
+        android:label="ITunesMusicFragment">
+        <action
+            android:id="@+id/action_ITunesMusicFragment_to_libraryMusicFragment"
+            app:destination="@id/libraryMusicFragment"
+            app:popUpTo="@id/libraryMusicFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_ITunesMusicFragment_to_myMusicFragment"
+            app:destination="@id/myMusicFragment"
+            app:popUpTo="@id/myMusicFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_ITunesMusicFragment_to_purchaseFragment"
+            app:destination="@id/purchaseFragment"
+            app:popUpTo="@id/purchaseFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/libraryMusicFragment"
+        android:name="com.example.mymusicplayer.view.LibraryMusicFragment"
+        android:label="LibraryMusicFragment">
+        <action
+            android:id="@+id/action_libraryMusicFragment_to_ITunesMusicFragment"
+            app:destination="@id/ITunesMusicFragment"
+            app:popUpTo="@id/ITunesMusicFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_libraryMusicFragment_to_myMusicFragment"
+            app:destination="@id/myMusicFragment"
+            app:popUpTo="@id/myMusicFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_libraryMusicFragment_to_purchaseFragment"
+            app:destination="@id/purchaseFragment"
+            app:popUpTo="@id/purchaseFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/myMusicFragment"
+        android:name="com.example.mymusicplayer.view.MyMusicFragment"
+        android:label="MyMusicFragment">
+        <action
+            android:id="@+id/action_myMusicFragment_to_ITunesMusicFragment"
+            app:destination="@id/ITunesMusicFragment"
+            app:popUpTo="@id/ITunesMusicFragment" />
+        <action
+            android:id="@+id/action_myMusicFragment_to_libraryMusicFragment"
+            app:destination="@id/libraryMusicFragment"
+            app:popUpTo="@id/libraryMusicFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_myMusicFragment_to_purchaseFragment"
+            app:destination="@id/purchaseFragment"
+            app:popUpTo="@id/purchaseFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/purchaseFragment"
+        android:name="com.example.mymusicplayer.view.PurchaseFragment"
+        android:label="PurchaseFragment" >
+        <action
+            android:id="@+id/action_purchaseFragment_to_myMusicFragment"
+            app:destination="@id/myMusicFragment"
+            app:popUpTo="@id/myMusicFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_purchaseFragment_to_libraryMusicFragment"
+            app:destination="@id/libraryMusicFragment"
+            app:popUpTo="@id/libraryMusicFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_purchaseFragment_to_ITunesMusicFragment"
+            app:destination="@id/ITunesMusicFragment"
+            app:popUpTo="@id/ITunesMusicFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>
