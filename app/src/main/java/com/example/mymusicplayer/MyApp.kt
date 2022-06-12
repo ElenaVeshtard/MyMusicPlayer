@@ -1,61 +1,83 @@
 package com.example.mymusicplayer
 
 import android.app.Application
-import androidx.room.Room
-import com.example.mymusicplayer.data.db.AlbumsDbDataSource
-import com.example.mymusicplayer.data.db.AlbumsRepository
-import com.example.mymusicplayer.data.db.LibraryRoomDataSource
-import com.example.mymusicplayer.data.libraryroom.LibraryDatabase
-import com.example.mymusicplayer.data.remote.RemoteDataSourceRetrofit
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.preferences.preferencesDataStoreFile
+import com.example.mymusicplayer.data.datastore.DataStoreAppFragmentStateSerializer
+import com.example.mymusicplayer.data.datastore.DataStoreTypes
+import com.example.mymusicplayer.data.permission.StoragePermissionChecker
+import com.example.mymusicplayer.data.permission.StoragePermissionCheckerImpl
+import com.example.mymusicplayer.data.remote.*
 import com.example.mymusicplayer.presentation.AlbumsViewModel
+import com.example.mymusicplayer.presentation.FragmentStateViewModel
+import com.example.mymusicplayer.presentation.TracksMyMusicViewModel
 import com.example.mymusicplayer.presentation.TracksViewModel
-import com.example.mymusicplayer.data.remote.ITunesRemoteDataSourceRetrofit
-import com.example.mymusicplayer.data.remote.LibraryRemoteDataSourceRetrofit
+import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.factoryOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-class MyApp : Application() {
 
-    private val moduleDatasource: Module
+class MyApp : Application() {
+    private val moduleDataStore: Module
         get() = module {
 
-            factory<RemoteDataSourceRetrofit> { LibraryRemoteDataSourceRetrofit() }
-            single<AlbumsDbDataSource> { LibraryRoomDataSource(get()) }
-            //single<AlbumsDbDataSource> { ITunesRoomDataSource(get()) }
+            factory<TracksMyMusicDataSource> { TracksMyMusicDataSourceImpl(get()) }
+            single<Json> { Json }
 
-            single {
-
-                Room.databaseBuilder(
-                    get(),
-                    LibraryDatabase::class.java, "database-name"
-                ).build()
+            single(named(DataStoreTypes.FRAGMENT_STATE)) {
+                DataStoreFactory.create(
+                    DataStoreAppFragmentStateSerializer(get())
+                ) {
+                    applicationContext.preferencesDataStoreFile("application_prefs")
+                }
             }
         }
 
-    private val moduleRepository: Module
-        get() = module {
-            factory { AlbumsRepository(get(), get(), isCacheEnabled = true) }
-            viewModel { AlbumsViewModel(get()) }
-        }
-    /*  private val itunesModule: Module
-          get() = module {
-              factoryOf<RemoteDataSourceRetrofit>(::ITunesRemoteDataSourceRetrofit)
-          }
+    /* private val dbModule: Module
+         get() = module {
+             single<AlbumsDbDataSource> { AlbumsRoomDataSource(get()) }
 
-      private val libraryModule: Module
-          get() = module {
-              factoryOf<RemoteDataSourceRetrofit>(::LibraryRemoteDataSourceRetrofit)
-          }*/
+             single {
+
+                 Room.databaseBuilder(
+                     get(),
+                     MyDatabase::class.java, "database-itunes"
+                 ).build()
+             }
+
+             *//*single {
+
+            Room.databaseBuilder(
+                get(),
+                MyDatabase::class.java, "database-library"
+            ).build()
+        }*//*
+        }*/
+
+    private val fakeRemoteModule: Module
+        get() = module {
+            factory<RemoteDataSource> { RemoteDataSourceFake() }
+        }
+
+    private val remoteModule: Module
+        get() = module {
+            factory<RemoteDataSource> { RemoteDataSourceRetrofit() }
+        }
+
 
     private val viewModelModule: Module
         get() = module {
-            // viewModelOf(::AlbumsViewModel)
+            single <StoragePermissionChecker>{ params->StoragePermissionCheckerImpl(params.get())}
+            //factory { AlbumsRepository(get(), get(), isCacheEnabled = true) }
+            viewModelOf(::AlbumsViewModel)
             viewModelOf(::TracksViewModel)
+            viewModelOf(::TracksMyMusicViewModel)
+            viewModel { FragmentStateViewModel(get(named(DataStoreTypes.FRAGMENT_STATE))) }
         }
 
     override fun onCreate() {
@@ -63,9 +85,12 @@ class MyApp : Application() {
         startKoin {
             androidContext(this@MyApp)
             modules(
-                moduleDatasource, moduleRepository,
-                // libraryModule, itunesModule,
-                viewModelModule)
+                fakeRemoteModule, viewModelModule,
+                //dbModule,
+                moduleDataStore
+            )
         }
     }
 }
+
+

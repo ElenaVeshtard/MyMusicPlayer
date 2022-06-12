@@ -1,4 +1,4 @@
-package com.example.mymusicplayer.view
+package com.example.mymusicplayer.view.albumsrecycler
 
 import android.content.res.Resources
 import android.graphics.Outline
@@ -13,13 +13,14 @@ import com.example.mymusicplayer.R
 import com.example.mymusicplayer.domain.AlbumModel
 
 
-class  AlbumsAdapter(var data: List<AlbumModel>) : RecyclerView.Adapter<AlbumsViewHolder>() {
+class AlbumsAdapter(var data: List<AlbumModel>) : RecyclerView.Adapter<AlbumsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_album, parent, false)
 
         return AlbumsViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: AlbumsViewHolder, position: Int) {
         val item = data[position]
         holder.imageAlbum.apply {

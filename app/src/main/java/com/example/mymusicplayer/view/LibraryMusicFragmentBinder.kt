@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymusicplayer.databinding.LibraryMusicFragmentBinding
 import com.example.mymusicplayer.domain.AlbumModel
+import com.example.mymusicplayer.domain.TrackModel
 import com.example.mymusicplayer.domain.Tracks
-import com.example.mymusicplayer.domain.TracksModel
-import kotlin.reflect.KFunction2
+import com.example.mymusicplayer.view.albumsrecycler.AlbumsAdapter
+import com.example.mymusicplayer.view.traksrecycler.TracksAdapter
 
 class LibraryMusicFragmentBinder(
     val fragment: LibraryMusicFragment,
-    val onItemClick: (View, Tracks) -> Boolean
+    private val onItemClick: (View, TrackModel) -> Boolean
 ) {
 
     private lateinit var binding: LibraryMusicFragmentBinding
@@ -47,12 +48,14 @@ class LibraryMusicFragmentBinder(
                 (binding.albumsRecyclerLibrary.adapter as AlbumsAdapter).data = list
     }
 
-    fun tracksLoaded(list: TracksModel?) {
+    fun tracksLoaded(list: Tracks?) {
 
         if (list != null) {
             if (binding.tracksRecyclerAlbum.adapter == null)
-                binding.tracksRecyclerAlbum.adapter = TracksAdapter(list.tracks,
-                    onItemClick)
+                binding.tracksRecyclerAlbum.adapter = TracksAdapter(
+                    list.tracks,
+                    onItemClick
+                )
             else
                 (binding.tracksRecyclerAlbum.adapter as TracksAdapter).data = list.tracks
         }

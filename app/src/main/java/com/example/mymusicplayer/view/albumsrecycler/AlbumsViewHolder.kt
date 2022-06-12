@@ -1,11 +1,10 @@
-package com.example.mymusicplayer.view
+package com.example.mymusicplayer.view.albumsrecycler
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymusicplayer.R
-
 
 class AlbumsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val imageAlbum: ImageView = view.findViewById(R.id.imageAlbum)

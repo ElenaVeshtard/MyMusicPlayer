@@ -1,4 +1,4 @@
-package com.example.mymusicplayer.view
+package com.example.mymusicplayer.view.traksrecycler
 
 import android.content.res.Resources
 import android.graphics.Outline
@@ -10,10 +10,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.mymusicplayer.R
-import com.example.mymusicplayer.domain.Tracks
-import kotlin.reflect.KFunction2
+import com.example.mymusicplayer.domain.TrackModel
 
-class TracksAdapter(var data: List<Tracks>, val onItemClick: (View, Tracks) -> Boolean) :
+class TracksAdapter(var data: List<TrackModel>, val onItemClick: (View, TrackModel) -> Boolean) :
     RecyclerView.Adapter<TracksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder {

@@ -1,53 +1,47 @@
 package com.example.mymusicplayer.view
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymusicplayer.databinding.MyMusicFragmentBinding
-import com.example.mymusicplayer.domain.AlbumModel
-import com.example.mymusicplayer.domain.Tracks
-import com.example.mymusicplayer.domain.TracksModel
-import kotlin.reflect.KFunction2
+import com.example.mymusicplayer.domain.TrackModel
+import com.example.mymusicplayer.view.traksrecycler.TracksAdapter
 
 
-class MyMusicFragmentBinder(val fragment: MyMusicFragment, val onItemClick: KFunction2<View, Tracks, Boolean>) {
+class MyMusicFragmentBinder(val fragment: Fragment) {
 
-    lateinit var binding: MyMusicFragmentBinding
+    private lateinit var binding: MyMusicFragmentBinding
+
 
     fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = MyMusicFragmentBinding.inflate(inflater, container, false)
 
-        var layoutManager =
-            LinearLayoutManager(fragment.requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-        binding.albumsRecyclerMyMusic.layoutManager = layoutManager
-
-        layoutManager =
+        val layoutManager =
             LinearLayoutManager(fragment.requireActivity())
-        binding.tracksRecyclerMyMusic.layoutManager = layoutManager
+
+        binding.musicRecyclerMyMusic.layoutManager = layoutManager
 
         return binding.root
     }
 
-    fun onDataLoaded(list: List<AlbumModel>?) {
-
-        if (list != null)
-            if (binding.albumsRecyclerMyMusic.adapter == null)
-                binding.albumsRecyclerMyMusic.adapter = AlbumsAdapter(list)
-            else
-                (binding.albumsRecyclerMyMusic.adapter as AlbumsAdapter).data = list
+    fun onItemClick(view: View, item: TrackModel): Boolean {
+        return false
     }
 
-    fun tracksLoaded(list: TracksModel?) {
+    fun onDataLoaded(list: List<TrackModel>) {
 
-        if (list != null) {
-            if (binding.tracksRecyclerMyMusic.adapter == null)
-                binding.tracksRecyclerMyMusic.adapter = TracksAdapter(list.tracks, onItemClick)
-            else
-                (binding.tracksRecyclerMyMusic.adapter as TracksAdapter).data = list.tracks
+        if (binding.musicRecyclerMyMusic.adapter == null) {
+            binding.musicRecyclerMyMusic.adapter = TracksAdapter(list, ::onItemClick)
+        } else {
+            (binding.musicRecyclerMyMusic.adapter as TracksAdapter).data = list
         }
     }
+
 }

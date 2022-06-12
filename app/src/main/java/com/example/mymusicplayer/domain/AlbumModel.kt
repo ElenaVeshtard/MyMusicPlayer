@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Entity(tableName = "albums")
 @Serializable
 data class AlbumModel(
@@ -15,6 +14,4 @@ data class AlbumModel(
     val name: String,
     @SerialName("trackCount")
     val trackCount: Int
-) {
-    fun transitionId() = id.toString()
-}
+)

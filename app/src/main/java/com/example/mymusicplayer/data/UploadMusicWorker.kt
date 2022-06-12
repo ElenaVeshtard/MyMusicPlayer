@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.example.mymusicplayer.data.remote.LibraryRemoteDataSourceRetrofit
+import com.example.mymusicplayer.data.remote.RemoteDataSource
 import com.example.mymusicplayer.data.remote.RemoteDataSourceRetrofit
 import com.example.mymusicplayer.view.DownloadNotification
 import okhttp3.ResponseBody
+import org.koin.java.KoinJavaComponent.inject
 import java.io.FileOutputStream
 import java.io.InputStream
 
@@ -17,9 +18,7 @@ class UploadMusicWorker(
 ) : CoroutineWorker(appContext, params) {
 
     private val downloadNotification: DownloadNotification = DownloadNotification(appContext)
-    private val remoteDataSourceRetrofit: RemoteDataSourceRetrofit =
-        LibraryRemoteDataSourceRetrofit()
-
+    private val remoteDataSourceRetrofit: RemoteDataSource by inject(RemoteDataSourceRetrofit::class.java)
     override suspend fun doWork(): Result {
         setForeground(getForegroundInfo())
         val url = inputData.getString("1")

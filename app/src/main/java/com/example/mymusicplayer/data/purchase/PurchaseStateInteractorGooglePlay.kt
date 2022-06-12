@@ -7,9 +7,10 @@ import com.example.mymusicplayer.domain.purchase.PurchaseStateInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class PurchaseStateInteractorGooglePlay(private val context: Context, private val mapper: GooglePlayProductMapper) :
-    PurchaseStateInteractor {
-
+class PurchaseStateInteractorGooglePlay(
+    private val context: Context,
+    private val mapper: GooglePlayProductMapper
+) :PurchaseStateInteractor {
     init {
         startConnection()
     }

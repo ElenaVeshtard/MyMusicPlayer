@@ -1,4 +1,4 @@
-package com.example.mymusicplayer.view
+package com.example.mymusicplayer.view.traksrecycler
 
 import android.view.View
 import android.widget.ImageView

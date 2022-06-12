@@ -2,7 +2,7 @@ package com.example.mymusicplayer.domain.purchase
 
 import kotlinx.coroutines.flow.StateFlow
 
-class PurchaseStateInteractorFake: PurchaseStateInteractor {
+class PurchaseStateInteractorFake : PurchaseStateInteractor {
 
     override val isPremium: StateFlow<Boolean>
         get() = TODO("Not yet implemented")

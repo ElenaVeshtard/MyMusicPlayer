@@ -30,7 +30,7 @@ class PurchaseFragment : Fragment() {
                 val navController = findNavController()
 
                 val action =
-                   PurchaseFragmentDirections.actionPurchaseFragmentToLibraryMusicFragment()
+                    PurchaseFragmentDirections.actionPurchaseFragmentToLibraryMusicFragment()
                 navController.navigate(action)
             }
 
@@ -39,7 +39,7 @@ class PurchaseFragment : Fragment() {
                 val navController = findNavController()
 
                 val action =
-                   PurchaseFragmentDirections.actionPurchaseFragmentToITunesMusicFragment()
+                    PurchaseFragmentDirections.actionPurchaseFragmentToITunesMusicFragment()
                 navController.navigate(action)
             }
         (parentFragment as NavHostFragment).parentFragment?.view?.findViewById<View>(R.id.myMusic)

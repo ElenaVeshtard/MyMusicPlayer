@@ -7,7 +7,10 @@ import com.android.billingclient.api.ProductDetails
 import com.example.mymusicplayer.domain.purchase.ProductEntity
 import com.example.mymusicplayer.domain.purchase.PurchaseMakeInteractor
 
-class PurchaseMakerInteractorGooglePlay(private val activity: Activity, val purchaseStateInteractorGooglePlay: PurchaseStateInteractorGooglePlay) :
+class PurchaseMakerInteractorGooglePlay(
+    private val activity: Activity,
+    val purchaseStateInteractorGooglePlay: PurchaseStateInteractorGooglePlay
+) :
     PurchaseMakeInteractor {
 
     override suspend fun makePurchase(product: ProductEntity) {
@@ -21,7 +24,8 @@ class PurchaseMakerInteractorGooglePlay(private val activity: Activity, val purc
             )
             .build()
 
-        val responseCode = purchaseStateInteractorGooglePlay.billingClient.launchBillingFlow(activity, flowParams)
+        val responseCode =
+            purchaseStateInteractorGooglePlay.billingClient.launchBillingFlow(activity, flowParams)
 
         if (responseCode.responseCode == BillingClient.BillingResponseCode.OK)
             purchaseStateInteractorGooglePlay._isPremium.value = true
