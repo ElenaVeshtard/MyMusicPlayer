@@ -19,6 +19,7 @@ class UploadMusicWorker(
 
     private val downloadNotification: DownloadNotification = DownloadNotification(appContext)
     private val remoteDataSourceRetrofit: RemoteDataSource by inject(RemoteDataSourceRetrofit::class.java)
+
     override suspend fun doWork(): Result {
         setForeground(getForegroundInfo())
         val url = inputData.getString("1")
@@ -34,7 +35,7 @@ class UploadMusicWorker(
         return ForegroundInfo(9274, downloadNotification.downloadNotification())
     }
 
-    fun saveFile(body: ResponseBody?, pathWhereYouWantToSaveFile: String): String {
+    private fun saveFile(body: ResponseBody?, pathWhereYouWantToSaveFile: String): String {
         if (body == null)
             return ""
         var input: InputStream? = null

@@ -11,7 +11,8 @@ class RemoteDataSourceFake : RemoteDataSource {
     override suspend fun getAlbums(flag: Boolean): List<AlbumModel> {
         val model = AlbumModel(
             0,
-            "https://inspiry-2ee60.web.app/music/images/itunes/hip_hop.jpg",
+            "https://images.unsplash.com/photo-1568127861543-b0c0696c735f?ixlib" +
+                    "=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=470&q=80",
             "Some Text",
             1
         )
@@ -36,16 +37,17 @@ class RemoteDataSourceFake : RemoteDataSource {
         return Tracks(
             AlbumModel(
                 0,
-                "https://inspiry-2ee60.web.app/music/images/itunes/hip_hop.jpg",
+                "https://images.unsplash.com/photo-1568127861543-b0c0696c735f?ixlib" +
+                        "=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=470&q=80",
                 "Some Text",
                 1
             ),
             arrayListOf(
                 TrackModel(
                     1,
-                    "sadsaf",
+                    "California",
                     "https://inspiry-2ee60.web.app/music/images/itunes/hip_hop.jpg",
-                    "sadas",
+                    "California",
                     "https://muzati.net/music/0-0-1-18352-20",
                 )
             )

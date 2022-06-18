@@ -5,10 +5,14 @@
       <map>
         <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/drawable/ic_premium_icon_purchase.xml" value="0.1" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/host_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/host_fragment.xml" value="0.4" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/item_album.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/item_track.xml" value="0.1234375" />
+        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/itunes_music_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/library_music_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/my_music_fragment.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/purchase_fragment.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/purchase_element.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Hp/AndroidStudioProjects/MyMusicPlayer/app/src/main/res/layout/purchase_fragment.xml" value="0.264" />
       </map>
     </option>
   </component>

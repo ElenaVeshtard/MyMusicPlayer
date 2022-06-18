@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class PurchaseStateInteractorGooglePlay(
-    private val context: Context,
+    context: Context,
     private val mapper: GooglePlayProductMapper
-) :PurchaseStateInteractor {
+) : PurchaseStateInteractor {
     init {
         startConnection()
     }

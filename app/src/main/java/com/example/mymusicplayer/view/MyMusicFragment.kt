@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.mymusicplayer.data.permission.PermissionState
 import com.example.mymusicplayer.data.permission.StoragePermissionChecker
-import com.example.mymusicplayer.data.permission.StoragePermissionCheckerImpl
 import com.example.mymusicplayer.presentation.FragmentStateViewModel
 import com.example.mymusicplayer.presentation.TracksMyMusicViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -23,16 +22,20 @@ import org.koin.core.parameter.parametersOf
 
 
 class MyMusicFragment : Fragment() {
-    lateinit var myMusicFragmentBinder: MyMusicFragmentBinder
+    private lateinit var myMusicFragmentBinder: MyMusicFragmentBinder
     private val fragmentStateViewModel: FragmentStateViewModel by inject()
-    val storagePermissionChecker: StoragePermissionChecker by inject { parametersOf(requireActivity()) }
+    private val storagePermissionChecker: StoragePermissionChecker by inject {
+        parametersOf(
+            requireActivity()
+        )
+    }
     private val viewModel: TracksMyMusicViewModel by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         myMusicFragmentBinder = MyMusicFragmentBinder(this)
 
         return myMusicFragmentBinder.onCreateView(inflater, container, savedInstanceState)
@@ -57,12 +60,15 @@ class MyMusicFragment : Fragment() {
                                 MyMusicFragmentDirections.actionMyMusicFragmentToLibraryMusicFragment()
                             navController.navigate(action)
                         }
+                        if (it.numberOfFragment == 3) {
+                            val action =
+                                MyMusicFragmentDirections.actionMyMusicFragmentToPurchaseFragment()
+                            navController.navigate(action)
+                        }
                     }
                 }
             }
         }
-
-
         viewLifecycleOwner.lifecycleScope.launch {
             storagePermissionChecker.storagePermission.collectLatest { permissionState ->
                 when (permissionState) {

@@ -1,28 +1,33 @@
 package com.example.mymusicplayer
 
 import android.app.Application
+import android.content.Context
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.mymusicplayer.data.datastore.DataStoreAppFragmentStateSerializer
 import com.example.mymusicplayer.data.datastore.DataStoreTypes
+import com.example.mymusicplayer.data.db.AlbumsRepository
 import com.example.mymusicplayer.data.permission.StoragePermissionChecker
 import com.example.mymusicplayer.data.permission.StoragePermissionCheckerImpl
 import com.example.mymusicplayer.data.remote.*
-import com.example.mymusicplayer.presentation.AlbumsViewModel
-import com.example.mymusicplayer.presentation.FragmentStateViewModel
-import com.example.mymusicplayer.presentation.TracksMyMusicViewModel
-import com.example.mymusicplayer.presentation.TracksViewModel
+import com.example.mymusicplayer.domain.purchase.PurchaseMakeInteractor
+import com.example.mymusicplayer.domain.purchase.PurchaseMakerInteractorFake
+import com.example.mymusicplayer.domain.purchase.PurchaseStateInteractor
+import com.example.mymusicplayer.domain.purchase.PurchaseStateInteractorFake
+import com.example.mymusicplayer.presentation.*
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-
 class MyApp : Application() {
+
     private val moduleDataStore: Module
         get() = module {
 
@@ -50,13 +55,19 @@ class MyApp : Application() {
                  ).build()
              }
 
-             *//*single {
+             single {
 
-            Room.databaseBuilder(
-                get(),
-                MyDatabase::class.java, "database-library"
-            ).build()
-        }*//*
+                 Room.databaseBuilder(
+                     get(),
+                     MyDatabase::class.java, "database-library"
+                 ).build()
+             }
+         }*/
+
+    /*private val remoteModule: Module
+        get() = module {
+            // factory<RemoteDataSource> { params -> RemoteDataSourceRetrofit(baseUrl = params.get()) }
+            factory<RemoteDataSource> { RemoteDataSourceRetrofit() }
         }*/
 
     private val fakeRemoteModule: Module
@@ -64,19 +75,34 @@ class MyApp : Application() {
             factory<RemoteDataSource> { RemoteDataSourceFake() }
         }
 
-    private val remoteModule: Module
+    private val modulePurchases: Module
         get() = module {
-            factory<RemoteDataSource> { RemoteDataSourceRetrofit() }
+
+            singleOf(::PurchaseStateInteractorFake)
+            {
+                bind<PurchaseStateInteractor>()
+            }
+            singleOf(::PurchaseMakerInteractorFake) {
+                bind<PurchaseMakeInteractor>()
+            }
         }
 
+    private val moduleSharedPreferences: Module
+        get() = module {
+            single {
+                val context: Context = get()
+                context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            }
+        }
 
     private val viewModelModule: Module
         get() = module {
-            single <StoragePermissionChecker>{ params->StoragePermissionCheckerImpl(params.get())}
-            //factory { AlbumsRepository(get(), get(), isCacheEnabled = true) }
+            single<StoragePermissionChecker> { params -> StoragePermissionCheckerImpl(params.get()) }
+            factory { AlbumsRepository(get(), get(), isCacheEnabled = true) }
             viewModelOf(::AlbumsViewModel)
             viewModelOf(::TracksViewModel)
             viewModelOf(::TracksMyMusicViewModel)
+            viewModelOf(::PurchaseViewModel)
             viewModel { FragmentStateViewModel(get(named(DataStoreTypes.FRAGMENT_STATE))) }
         }
 
@@ -85,12 +111,13 @@ class MyApp : Application() {
         startKoin {
             androidContext(this@MyApp)
             modules(
-                fakeRemoteModule, viewModelModule,
+                fakeRemoteModule,
+                viewModelModule,
+                modulePurchases,
+                moduleSharedPreferences,
                 //dbModule,
                 moduleDataStore
             )
         }
     }
 }
-
-

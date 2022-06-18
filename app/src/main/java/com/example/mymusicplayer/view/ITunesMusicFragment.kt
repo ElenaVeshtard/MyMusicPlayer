@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.example.mymusicplayer.R
 import com.example.mymusicplayer.presentation.AlbumsViewModel
 import com.example.mymusicplayer.presentation.FragmentStateViewModel
 import com.example.mymusicplayer.presentation.TracksViewModel
@@ -20,7 +18,7 @@ import org.koin.android.ext.android.inject
 
 class ITunesMusicFragment : Fragment() {
 
-    lateinit var viewBinder: ITunesMusicFragmentBinder
+    private lateinit var viewBinder: ITunesMusicFragmentBinder
     private val viewModel: AlbumsViewModel by inject()
     private val tracksITunesViewModel: TracksViewModel by inject()
     private val fragmentStateViewModel: FragmentStateViewModel by inject()
@@ -37,15 +35,6 @@ class ITunesMusicFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (parentFragment as NavHostFragment).parentFragment?.view?.findViewById<View>(R.id.imagePurchase)
-            ?.setOnClickListener {
-                val navController = findNavController()
-
-                val action =
-                    ITunesMusicFragmentDirections.actionITunesMusicFragmentToPurchaseFragment()
-                navController.navigate(action)
-            }
-
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 fragmentStateViewModel.appFragmentState.collect {
@@ -59,6 +48,11 @@ class ITunesMusicFragment : Fragment() {
                         if (it.numberOfFragment == 2) {
                             val action =
                                 ITunesMusicFragmentDirections.actionITunesMusicFragmentToMyMusicFragment()
+                            navController.navigate(action)
+                        }
+                        if (it.numberOfFragment == 3) {
+                            val action =
+                                ITunesMusicFragmentDirections.actionITunesMusicFragmentToPurchaseFragment()
                             navController.navigate(action)
                         }
                     }

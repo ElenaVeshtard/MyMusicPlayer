@@ -13,7 +13,7 @@ import com.example.mymusicplayer.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var broadcastReceiver: BroadcastReceiver
 
 
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
-
+        appContext = applicationContext
         createReceiver()
     }
 
@@ -51,5 +51,9 @@ class MainActivity : AppCompatActivity() {
     private fun registerReceiver() {
         val intentFilter = IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED)
         registerReceiver(broadcastReceiver, intentFilter)
+    }
+
+    companion object {
+        lateinit var appContext: Context
     }
 }
