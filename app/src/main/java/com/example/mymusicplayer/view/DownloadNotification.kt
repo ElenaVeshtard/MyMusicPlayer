@@ -9,9 +9,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.mymusicplayer.R
 
-import kotlinx.coroutines.delay
-
-const val CHANNEL_ID: String =  "message"
+const val CHANNEL_ID: String = "message"
 
 class DownloadNotification(private val context: Context) {
 
@@ -28,36 +26,7 @@ class DownloadNotification(private val context: Context) {
         return builder.build()
     }
 
-    suspend fun processDownloadNotification(progress: Int) {
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .setContentTitle("Download")
-
-            .setProgress(100, progress, false)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(10, builder.build())
-        delay(100)
-    }
-
-    fun downloadDoneNotification() {
-        createNotificationChannel()
-
-        Log.i("test", "Done")
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .setContentTitle("Download")
-            .setContentText("Done")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(2, builder.build())
-    }
-
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Localized Name"
             val descriptionText = "Localized Description"

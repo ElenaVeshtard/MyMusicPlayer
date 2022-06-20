@@ -31,7 +31,7 @@ class MyMusicFragmentBinder(val fragment: Fragment) {
         return binding.root
     }
 
-    fun onItemClick(view: View, item: TrackModel): Boolean {
+    private fun onItemClick(view: View, item: TrackModel): Boolean {
         return false
     }
 

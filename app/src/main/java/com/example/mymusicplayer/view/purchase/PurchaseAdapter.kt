@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymusicplayer.R
 import com.example.mymusicplayer.domain.purchase.PeriodType
 import com.example.mymusicplayer.domain.purchase.ProductEntity
+import com.example.mymusicplayer.presentation.FragmentStateViewModel
 import com.example.mymusicplayer.view.MainActivity
+import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent.inject
 
 class PurchaseAdapter(data: List<ProductEntity>, private val onItemClick: (ProductEntity) -> Unit) :
     RecyclerView.Adapter<PurchaseViewHolder>() {
@@ -50,7 +53,6 @@ class PurchaseAdapter(data: List<ProductEntity>, private val onItemClick: (Produ
                     ).show()
 
                 }
-                findNavController().navigateUp()
             }
         }
     }

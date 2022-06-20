@@ -9,7 +9,7 @@ import com.example.mymusicplayer.domain.purchase.PurchaseMakeInteractor
 
 class PurchaseMakerInteractorGooglePlay(
     private val activity: Activity,
-    val purchaseStateInteractorGooglePlay: PurchaseStateInteractorGooglePlay
+    private val purchaseStateInteractorGooglePlay: PurchaseStateInteractorGooglePlay
 ) :
     PurchaseMakeInteractor {
 

@@ -12,6 +12,6 @@ class PurchaseMakerInteractorFake(
 
         sharedPreferences.edit()
             .putBoolean("isPurchased", true)
-            .apply()
+            .commit()
     }
 }

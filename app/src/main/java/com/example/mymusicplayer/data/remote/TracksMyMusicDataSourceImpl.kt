@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import com.example.mymusicplayer.domain.AlbumModel
 import com.example.mymusicplayer.domain.TrackModel
 
 class TracksMyMusicDataSourceImpl(private val context: Context) :
@@ -41,7 +40,7 @@ class TracksMyMusicDataSourceImpl(private val context: Context) :
         if (cursor?.moveToFirst() == true) {
 
             do {
-                val artist= cursor.getString(
+                val artist = cursor.getString(
                     cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
                 )
                 val id = cursor.getLong(

@@ -14,7 +14,7 @@ import com.example.mymusicplayer.view.traksrecycler.TracksAdapter
 
 
 class ITunesMusicFragmentBinder(val fragment: ITunesMusicFragment) {
-    lateinit var binding: ItunesMusicFragmentBinding
+    private lateinit var binding: ItunesMusicFragmentBinding
     fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +38,7 @@ class ITunesMusicFragmentBinder(val fragment: ITunesMusicFragment) {
                 (binding.albumsRecyclerITunes.adapter as AlbumsAdapter).data = list
     }
 
-    fun onItemClick(view: View, tracks: TrackModel): Boolean {
+    private fun onItemClick(view: View, tracks: TrackModel): Boolean {
         return true
     }
 

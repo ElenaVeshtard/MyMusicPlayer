@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TmsTemp</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="to_remove_the_yellow_badge">to remove the yellow badge</string>
+    <string name="library">Library</string>
+    <string name="itunes">ITunes</string>
+    <string name="my_music">My Music</string>
 </resources>

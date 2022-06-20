@@ -42,14 +42,17 @@ class HostFragment : Fragment() {
             fragmentStateViewModel.changeFragment(2)
         }
 
-        viewBinder.binding.imagePurchase.setOnClickListener {
-            fragmentStateViewModel.changeFragment(3)
-            lifecycleScope.launch {
-                purchaseStateInteractor.isPremium.collect {
-                    if (it) {
-                        viewBinder.binding.imagePurchase.visibility = View.GONE
-                    } else viewBinder.binding.imagePurchase.apply {
-                        visibility = View.VISIBLE
+        lifecycleScope.launch {
+
+            purchaseStateInteractor.isPremium.collect {
+                if (it) {
+                    viewBinder.binding.imagePurchase.visibility = View.GONE
+
+                } else {
+                    viewBinder.binding.imagePurchase.visibility = View.VISIBLE
+
+                    viewBinder.binding.imagePurchase.setOnClickListener {
+                        fragmentStateViewModel.changeFragment(3)
                     }
                 }
             }
