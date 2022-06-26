@@ -2,17 +2,17 @@ package com.example.mymusicplayer.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymusicplayer.data.db.MusicRepository
+import com.example.mymusicplayer.data.remote.MyMusicDataSource
 import com.example.mymusicplayer.domain.AlbumModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AlbumsViewModel(private val musicApi: MusicRepository) : ViewModel() {
+class MyAlbumsViewModel(private val musicApi: MyMusicDataSource) : ViewModel() {
 
-    private val _stateAlbums = MutableStateFlow<Result<List<AlbumModel>>?>(null)
-    val stateAlbums: StateFlow<Result<List<AlbumModel>>?> = _stateAlbums
+    private val _stateMyAlbums = MutableStateFlow<Result<List<AlbumModel>>?>(null)
+    val stateMyAlbums: StateFlow<Result<List<AlbumModel>>?> = _stateMyAlbums
 
     fun loadAlbums() {
 
@@ -23,7 +23,7 @@ class AlbumsViewModel(private val musicApi: MusicRepository) : ViewModel() {
             } catch (t: Throwable) {
                 Result.failure(t)
             }
-            _stateAlbums.emit(result)
+            _stateMyAlbums.emit(result)
         }
     }
 }

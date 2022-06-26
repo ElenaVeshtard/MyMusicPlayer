@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 
 @Entity(tableName = "tracks")
 @Serializable
-class TrackModel(
+data class TrackModel(
     @PrimaryKey val id: Long,
     val artist: String,
     val image: String,
     val title: String,
     val url: String,
-     //val albumId: Int
+    val albumId: Long
 )

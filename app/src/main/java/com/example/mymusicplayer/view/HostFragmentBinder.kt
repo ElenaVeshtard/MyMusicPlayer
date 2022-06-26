@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.mymusicplayer.databinding.HostFragmentBinding
 
 class HostFragmentBinder(val fragment: HostFragment) {
@@ -24,49 +25,37 @@ class HostFragmentBinder(val fragment: HostFragment) {
     fun changeFragment(numberFragment: Int) {
         when (numberFragment) {
             0 -> {
-                binding.iTunes.setTextColor(Color.WHITE)
-                binding.iTunes.textSize = 18F
-                binding.iTunes.typeface = Typeface.DEFAULT_BOLD
-                binding.library.setTextColor(Color.GRAY)
-                binding.library.textSize = 16F
-                binding.library.typeface = Typeface.DEFAULT
-                binding.myMusic.setTextColor(Color.GRAY)
-                binding.myMusic.textSize - 16F
-                binding.myMusic.typeface = Typeface.DEFAULT
+                white(binding.iTunes)
+                gray(binding.myMusic)
+                gray(binding.library)
             }
             1 -> {
-                binding.library.setTextColor(Color.WHITE)
-                binding.library.textSize = 18F
-                binding.library.typeface = Typeface.DEFAULT_BOLD
-                binding.iTunes.setTextColor(Color.GRAY)
-                binding.iTunes.textSize = 16F
-                binding.iTunes.typeface = Typeface.DEFAULT
-                binding.myMusic.setTextColor(Color.GRAY)
-                binding.myMusic.textSize - 16F
-                binding.myMusic.typeface = Typeface.DEFAULT
+                white(binding.library)
+                gray(binding.myMusic)
+                gray(binding.iTunes)
             }
             2 -> {
-                binding.myMusic.setTextColor(Color.WHITE)
-                binding.myMusic.textSize - 18F
-                binding.myMusic.typeface = Typeface.DEFAULT_BOLD
-                binding.library.setTextColor(Color.GRAY)
-                binding.library.textSize = 16F
-                binding.library.typeface = Typeface.DEFAULT
-                binding.iTunes.setTextColor(Color.GRAY)
-                binding.iTunes.textSize = 16F
-                binding.iTunes.typeface = Typeface.DEFAULT
+                white(binding.myMusic)
+                gray(binding.library)
+                gray(binding.iTunes)
             }
             3 -> {
-                binding.myMusic.setTextColor(Color.GRAY)
-                binding.myMusic.textSize - 16F
-                binding.myMusic.typeface = Typeface.DEFAULT
-                binding.library.setTextColor(Color.GRAY)
-                binding.library.textSize = 16F
-                binding.library.typeface = Typeface.DEFAULT
-                binding.iTunes.setTextColor(Color.GRAY)
-                binding.iTunes.textSize = 16F
-                binding.iTunes.typeface = Typeface.DEFAULT
+                gray(binding.myMusic)
+                gray(binding.library)
+                gray(binding.iTunes)
             }
         }
+    }
+
+    private fun gray(view: TextView) {
+        view.setTextColor(Color.GRAY)
+        view.textSize - 16F
+        view.typeface = Typeface.DEFAULT
+    }
+
+    private fun white(view: TextView) {
+        view.setTextColor(Color.WHITE)
+        view.textSize - 18F
+        view.typeface = Typeface.DEFAULT_BOLD
     }
 }

@@ -1,5 +1,6 @@
 package com.example.mymusicplayer.presentation
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,14 +11,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class FragmentStateViewModel(private val appFragment: DataStore<AppFragmentState>): ViewModel(){
+class FragmentStateViewModel(
+    private val appFragment: DataStore<AppFragmentState>,
+    applicationContext: Context
+) : ViewModel() {
+
+    val appContext: Context = applicationContext
 
     val appFragmentState: StateFlow<AppFragmentState?> =
         appFragment.data.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     fun changeFragment(value: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            appFragment.updateData { it.copy(numberOfFragment = value) }
+            appFragment.updateData {
+                it.copy(numberOfFragment = value)
+            }
         }
     }
 }

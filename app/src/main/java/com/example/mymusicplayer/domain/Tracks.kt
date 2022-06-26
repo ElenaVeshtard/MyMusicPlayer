@@ -1,9 +1,16 @@
 package com.example.mymusicplayer.domain
 
+import androidx.room.Embedded
+import androidx.room.Relation
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Tracks(
-    val album: AlbumModel,
-    val tracks: ArrayList<TrackModel>
+
+    @Embedded val album: AlbumModel,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "albumId"
+    )
+    val tracks: List<TrackModel>
 )

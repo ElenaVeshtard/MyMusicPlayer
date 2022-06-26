@@ -13,5 +13,7 @@
     <color name="selectedTextColor">#E0E0E0</color>
     <color name="textColor">#828282</color>
     <color name="textColorView">#E0E0E0</color>
+    <color name="textColorViewGrey"> #BDBDBD</color>
+
 
 </resources>

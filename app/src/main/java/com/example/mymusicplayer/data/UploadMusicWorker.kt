@@ -5,29 +5,28 @@ import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.example.mymusicplayer.data.remote.RemoteDataSource
-import com.example.mymusicplayer.data.remote.RemoteDataSourceRetrofit
+import com.example.mymusicplayer.data.utils.DataKeys.Companion.LOADING_TRACKS_URL
 import com.example.mymusicplayer.view.DownloadNotification
 import okhttp3.ResponseBody
-import org.koin.java.KoinJavaComponent.inject
 import java.io.FileOutputStream
 import java.io.InputStream
 
 class UploadMusicWorker(
     private val appContext: Context,
-    params: WorkerParameters
+    params: WorkerParameters,
+    private val remoteDataSourceRetrofit: RemoteDataSource
 ) : CoroutineWorker(appContext, params) {
 
     private val downloadNotification: DownloadNotification = DownloadNotification(appContext)
-    private val remoteDataSourceRetrofit: RemoteDataSource by inject(RemoteDataSourceRetrofit::class.java)
 
     override suspend fun doWork(): Result {
         setForeground(getForegroundInfo())
-        val url = inputData.getString("1")
+        val url = inputData.getString(LOADING_TRACKS_URL)
         val fileName = url?.substring(url.lastIndexOf("/") + 1)
-        val pathWhereYouWantToSaveFile = appContext.filesDir.absolutePath + fileName
+        val filePath = appContext.filesDir.absolutePath + fileName
 
         val responseBody = url?.let { remoteDataSourceRetrofit.downloadFile(it).body() }
-        saveFile(responseBody, pathWhereYouWantToSaveFile)
+        saveFile(responseBody, filePath)
         return Result.success()
     }
 
@@ -43,7 +42,7 @@ class UploadMusicWorker(
             input = body.byteStream()
             val fos = FileOutputStream(pathWhereYouWantToSaveFile)
             fos.use { output ->
-                val buffer = ByteArray(4 * 1024) // or other buffer size
+                val buffer = ByteArray(4 * 1024)
                 var read: Int
                 while (input.read(buffer).also { read = it } != -1) {
                     output.write(buffer, 0, read)

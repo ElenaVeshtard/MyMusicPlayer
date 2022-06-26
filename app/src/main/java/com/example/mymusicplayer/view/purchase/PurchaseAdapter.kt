@@ -1,20 +1,20 @@
 package com.example.mymusicplayer.view.purchase
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymusicplayer.R
 import com.example.mymusicplayer.domain.purchase.PeriodType
 import com.example.mymusicplayer.domain.purchase.ProductEntity
-import com.example.mymusicplayer.presentation.FragmentStateViewModel
-import com.example.mymusicplayer.view.MainActivity
-import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent.inject
 
-class PurchaseAdapter(data: List<ProductEntity>, private val onItemClick: (ProductEntity) -> Unit) :
+class PurchaseAdapter(
+    data: List<ProductEntity>,
+    private val onItemClick: (ProductEntity) -> Unit,
+    private val applicationContext: Context
+) :
     RecyclerView.Adapter<PurchaseViewHolder>() {
 
     var data: List<ProductEntity> = data
@@ -40,14 +40,14 @@ class PurchaseAdapter(data: List<ProductEntity>, private val onItemClick: (Produ
                 onItemClick(cell)
                 when (cell.periodType) {
                     PeriodType.MONTH -> Toast.makeText(
-                        MainActivity.appContext,
+                        applicationContext,
                         "Month subscription activated",
                         Toast.LENGTH_SHORT
                     ).show()
 
 
                     PeriodType.YEAR -> Toast.makeText(
-                        MainActivity.appContext,
+                        applicationContext,
                         "Year subscription activated",
                         Toast.LENGTH_SHORT
                     ).show()

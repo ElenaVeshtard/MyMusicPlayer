@@ -20,7 +20,7 @@ class PurchaseViewModel(private val purchaseState: PurchaseStateInteractor) : Vi
     fun loadData() {
         downloadingJob?.cancel()
 
-        downloadingJob = viewModelScope.launch(Dispatchers.IO + Job()) {
+        downloadingJob = viewModelScope.launch(Dispatchers.IO) {
             val result = try {
                 Result.success(purchaseState.getListPurchases())
             } catch (exception: Throwable) {

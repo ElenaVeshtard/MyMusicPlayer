@@ -9,19 +9,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.mymusicplayer.R
 import com.example.mymusicplayer.presentation.AlbumsViewModel
 import com.example.mymusicplayer.presentation.FragmentStateViewModel
 import com.example.mymusicplayer.presentation.TracksViewModel
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class ITunesMusicFragment : Fragment() {
 
     private lateinit var viewBinder: ITunesMusicFragmentBinder
-    private val viewModel: AlbumsViewModel by inject()
-    private val tracksITunesViewModel: TracksViewModel by inject()
-    private val fragmentStateViewModel: FragmentStateViewModel by inject()
+    private val albumsViewModel: AlbumsViewModel by sharedViewModel()
+    private val tracksITunesViewModel: TracksViewModel by sharedViewModel()
+    private val fragmentStateViewModel: FragmentStateViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,29 +42,23 @@ class ITunesMusicFragment : Fragment() {
                     if (it != null) {
                         val navController = findNavController()
                         if (it.numberOfFragment == 1) {
-                            val action =
-                                ITunesMusicFragmentDirections.actionITunesMusicFragmentToLibraryMusicFragment()
-                            navController.navigate(action)
+                            navController.navigate(R.id.action_ITunesMusicFragment_to_libraryMusicFragment)
                         }
                         if (it.numberOfFragment == 2) {
-                            val action =
-                                ITunesMusicFragmentDirections.actionITunesMusicFragmentToMyMusicFragment()
-                            navController.navigate(action)
+                            navController.navigate(R.id.action_ITunesMusicFragment_to_myMusicFragment)
                         }
                         if (it.numberOfFragment == 3) {
-                            val action =
-                                ITunesMusicFragmentDirections.actionITunesMusicFragmentToPurchaseFragment()
-                            navController.navigate(action)
+                            navController.navigate(R.id.action_ITunesMusicFragment_to_purchaseFragment)
                         }
                     }
                 }
             }
         }
-        viewModel.loadData(true)
+        albumsViewModel.loadAlbums()
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateITunes.collect {
+                albumsViewModel.stateAlbums.collect {
                     if (it != null)
                         viewBinder.onDataLoaded(it.getOrThrow())
                 }
@@ -74,7 +69,7 @@ class ITunesMusicFragment : Fragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                tracksITunesViewModel.stateITunes.collect {
+                tracksITunesViewModel.stateTracks.collect {
                     if (it != null)
                         viewBinder.tracksLoaded(it.getOrThrow())
                 }

@@ -18,5 +18,5 @@ interface MusicApi {
 
     @Streaming
     @GET
-    suspend fun downloadFile(@Url fileUrl:String): Response<ResponseBody>
+    suspend fun downloadFile(@Url fileUrl: String): Response<ResponseBody>
 }

@@ -1,15 +1,12 @@
 package com.example.mymusicplayer.view.traksrecycler
 
-import android.content.res.Resources
-import android.graphics.Outline
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.mymusicplayer.R
+import com.example.mymusicplayer.data.utils.ImageUtils
 import com.example.mymusicplayer.domain.TrackModel
 
 class TracksAdapter(var data: List<TrackModel>, val onItemClick: (View, TrackModel) -> Boolean) :
@@ -28,7 +25,7 @@ class TracksAdapter(var data: List<TrackModel>, val onItemClick: (View, TrackMod
                 item.image.replace
                     ("{w}", "200").replace("{h}", "200")
             )
-            setRoundRect(this, 10)
+            ImageUtils.setRoundRect(this, 10)
         }
         holder.titleTrack.text = item.title
         holder.textTrack.text = item.artist
@@ -38,15 +35,4 @@ class TracksAdapter(var data: List<TrackModel>, val onItemClick: (View, TrackMod
     override fun getItemCount(): Int {
         return data.size
     }
-
-    private fun setRoundRect(imageView: ImageView, dp: Int) {
-        imageView.clipToOutline = true
-        imageView.outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, view.width, view.height, dpToPx(dp))
-            }
-        }
-    }
-
-    private fun dpToPx(dp: Int): Float = dp * Resources.getSystem().displayMetrics.density
 }

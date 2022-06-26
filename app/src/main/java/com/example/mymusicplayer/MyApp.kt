@@ -4,12 +4,19 @@ import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.room.Room
 import com.example.mymusicplayer.data.datastore.DataStoreAppFragmentStateSerializer
 import com.example.mymusicplayer.data.datastore.DataStoreTypes
-import com.example.mymusicplayer.data.db.AlbumsRepository
+import com.example.mymusicplayer.data.db.AlbumsDbDataSource
+import com.example.mymusicplayer.data.db.MusicRepository
+import com.example.mymusicplayer.data.db.AlbumsRoomDataSource
 import com.example.mymusicplayer.data.permission.StoragePermissionChecker
 import com.example.mymusicplayer.data.permission.StoragePermissionCheckerImpl
-import com.example.mymusicplayer.data.remote.*
+import com.example.mymusicplayer.data.remote.RemoteDataSource
+import com.example.mymusicplayer.data.remote.RemoteDataSourceFake
+import com.example.mymusicplayer.data.remote.MyMusicDataSource
+import com.example.mymusicplayer.data.remote.MyMusicDataSourceImpl
+import com.example.mymusicplayer.data.room.MyDatabase
 import com.example.mymusicplayer.domain.purchase.PurchaseMakeInteractor
 import com.example.mymusicplayer.domain.purchase.PurchaseMakerInteractorFake
 import com.example.mymusicplayer.domain.purchase.PurchaseStateInteractor
@@ -31,7 +38,7 @@ class MyApp : Application() {
     private val moduleDataStore: Module
         get() = module {
 
-            factory<TracksMyMusicDataSource> { TracksMyMusicDataSourceImpl(get()) }
+            factory<MyMusicDataSource> { MyMusicDataSourceImpl(get()) }
             single<Json> { Json }
 
             single(named(DataStoreTypes.FRAGMENT_STATE)) {
@@ -43,26 +50,17 @@ class MyApp : Application() {
             }
         }
 
-    /* private val dbModule: Module
+     private val dbModule: Module
          get() = module {
              single<AlbumsDbDataSource> { AlbumsRoomDataSource(get()) }
 
              single {
-
-                 Room.databaseBuilder(
-                     get(),
-                     MyDatabase::class.java, "database-itunes"
-                 ).build()
-             }
-
-             single {
-
                  Room.databaseBuilder(
                      get(),
                      MyDatabase::class.java, "database-library"
                  ).build()
              }
-         }*/
+         }
 
     /*private val remoteModule: Module
         get() = module {
@@ -98,13 +96,15 @@ class MyApp : Application() {
     private val viewModelModule: Module
         get() = module {
             single<StoragePermissionChecker> { params -> StoragePermissionCheckerImpl(params.get()) }
-            factory { AlbumsRepository(get(), get(), isCacheEnabled = true) }
-            viewModelOf(::AlbumsViewModel)
-            viewModelOf(::TracksViewModel)
-            viewModelOf(::TracksMyMusicViewModel)
+            factory { MusicRepository(get(), isCacheEnabled = true, RemoteDataSourceFake()) }
+            factory { MyMusicDataSourceImpl(get()) }
             viewModelOf(::PurchaseViewModel)
-            viewModel { FragmentStateViewModel(get(named(DataStoreTypes.FRAGMENT_STATE))) }
-        }
+            viewModel { FragmentStateViewModel(get(named(DataStoreTypes.FRAGMENT_STATE)), applicationContext) }
+            viewModel { TracksViewModel(get()) }
+            viewModel { AlbumsViewModel(get()) }
+            viewModel { MyTracksViewModel(get()) }
+            viewModel { MyAlbumsViewModel(get()) }
+                   }
 
     override fun onCreate() {
         super.onCreate()
@@ -115,7 +115,7 @@ class MyApp : Application() {
                 viewModelModule,
                 modulePurchases,
                 moduleSharedPreferences,
-                //dbModule,
+                dbModule,
                 moduleDataStore
             )
         }

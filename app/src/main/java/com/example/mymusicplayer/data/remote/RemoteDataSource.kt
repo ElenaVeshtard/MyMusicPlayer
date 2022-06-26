@@ -9,9 +9,9 @@ import retrofit2.http.Url
 
 interface RemoteDataSource {
 
-    suspend fun getAlbums(flag: Boolean): List<AlbumModel>
+    suspend fun getAlbums(): List<AlbumModel>
 
-    suspend fun getTracks(@Query("albumId") albumId: Long):Tracks
+    suspend fun getTracks(albumId: Long): Tracks
 
-    suspend fun downloadFile(@Url fileUrl:String): Response<ResponseBody>
+    suspend fun downloadFile(fileUrl: String): Response<ResponseBody>
 }

@@ -3,7 +3,6 @@ package com.example.mymusicplayer.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymusicplayer.databinding.PurchaseFragmentBinding
 import com.example.mymusicplayer.domain.purchase.ProductEntity
@@ -11,7 +10,7 @@ import com.example.mymusicplayer.view.purchase.PurchaseAdapter
 
 
 class PurchaseFragmentBinder(
-    private val fragment: Fragment,
+    private val fragment: PurchaseFragment,
     private val onItemClick: (ProductEntity) -> Unit
 ) {
 
@@ -31,7 +30,8 @@ class PurchaseFragmentBinder(
     fun onDataLoaded(data: List<ProductEntity>) {
 
         if (binding.purchasesContainer.adapter == null) {
-            binding.purchasesContainer.adapter = PurchaseAdapter(data, onItemClick)
+            binding.purchasesContainer.adapter =
+                PurchaseAdapter(data, onItemClick, fragment.fragmentStateViewModel.appContext)
         } else {
             (binding.purchasesContainer.adapter as PurchaseAdapter).data = data
         }

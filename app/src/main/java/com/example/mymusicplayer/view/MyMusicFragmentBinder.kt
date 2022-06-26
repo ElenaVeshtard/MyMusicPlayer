@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymusicplayer.databinding.MyMusicFragmentBinding
+import com.example.mymusicplayer.domain.AlbumModel
 import com.example.mymusicplayer.domain.TrackModel
+import com.example.mymusicplayer.domain.Tracks
+import com.example.mymusicplayer.view.albumsrecycler.AlbumsAdapter
 import com.example.mymusicplayer.view.traksrecycler.TracksAdapter
 
 
@@ -23,11 +26,14 @@ class MyMusicFragmentBinder(val fragment: Fragment) {
     ): View {
         binding = MyMusicFragmentBinding.inflate(inflater, container, false)
 
-        val layoutManager =
+        var layoutManager =
+            LinearLayoutManager(fragment.requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+
+        binding.albumsMusicRecyclerMyMusic.layoutManager = layoutManager
+        layoutManager =
             LinearLayoutManager(fragment.requireActivity())
 
         binding.musicRecyclerMyMusic.layoutManager = layoutManager
-
         return binding.root
     }
 
@@ -35,12 +41,21 @@ class MyMusicFragmentBinder(val fragment: Fragment) {
         return false
     }
 
-    fun onDataLoaded(list: List<TrackModel>) {
+    fun onTracksLoaded(list: Tracks) {
 
         if (binding.musicRecyclerMyMusic.adapter == null) {
-            binding.musicRecyclerMyMusic.adapter = TracksAdapter(list, ::onItemClick)
+            binding.musicRecyclerMyMusic.adapter = TracksAdapter(list.tracks, ::onItemClick)
         } else {
-            (binding.musicRecyclerMyMusic.adapter as TracksAdapter).data = list
+            (binding.musicRecyclerMyMusic.adapter as TracksAdapter).data = list.tracks
+        }
+    }
+
+    fun onAlbumsLoaded(list: List<AlbumModel>) {
+
+        if (binding.albumsMusicRecyclerMyMusic.adapter == null) {
+            binding.albumsMusicRecyclerMyMusic.adapter = AlbumsAdapter(list)
+        } else {
+            (binding.albumsMusicRecyclerMyMusic.adapter as AlbumsAdapter).data = list
         }
     }
 

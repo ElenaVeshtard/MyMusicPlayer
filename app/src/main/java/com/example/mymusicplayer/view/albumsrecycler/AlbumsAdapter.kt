@@ -1,15 +1,12 @@
 package com.example.mymusicplayer.view.albumsrecycler
 
-import android.content.res.Resources
-import android.graphics.Outline
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.mymusicplayer.R
+import com.example.mymusicplayer.data.utils.ImageUtils
 import com.example.mymusicplayer.domain.AlbumModel
 
 
@@ -26,29 +23,18 @@ class AlbumsAdapter(var data: List<AlbumModel>) : RecyclerView.Adapter<AlbumsVie
         holder.imageAlbum.apply {
             load(item.image)
             scaleType = ImageView.ScaleType.CENTER_CROP
-            setRoundRect(this, 10)
+            ImageUtils.setRoundRect(this, 10)
         }
 
         holder.textAlbum.text = item.name
         holder.albumImageFrame.apply {
             setBackgroundResource(R.color.colorPrimary)
-            setRoundRect(this, 12)
+            ImageUtils.setRoundRect(this, 12)
         }
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
-
-    private fun setRoundRect(imageView: ImageView, dp: Int) {
-        imageView.clipToOutline = true
-        imageView.outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, view.width, view.height, dpToPx(dp))
-            }
-        }
-    }
-
-    private fun dpToPx(dp: Int): Float = dp * Resources.getSystem().displayMetrics.density
 }
 

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.mymusicplayer"
-        minSdk 23
+        minSdk 30
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -98,4 +98,5 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.6.0"
     testImplementation "io.mockk:mockk:1.12.4"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
+
 }
