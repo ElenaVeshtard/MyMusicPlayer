@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/hostFragment2"
-        android:name="com.example.mymusicplayer.view.HostFragment"
+        android:name="com.example.mymusicplayer.presentation.view.hostfragment.HostFragment"
         android:label="HostFragment" />
 </navigation>

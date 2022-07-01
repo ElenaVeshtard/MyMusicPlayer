@@ -1,10 +1,10 @@
 package com.example.mymusicplayer.data.remote
 
 import com.example.mymusicplayer.domain.AlbumModel
-import com.example.mymusicplayer.domain.Tracks
+import com.example.mymusicplayer.domain.AlbumsWithTracks
 
 
 interface MyMusicDataSource {
-    suspend fun getTracks(): Tracks
+    suspend fun getTracks(): AlbumsWithTracks
     suspend fun getAlbums(): List<AlbumModel>
 }

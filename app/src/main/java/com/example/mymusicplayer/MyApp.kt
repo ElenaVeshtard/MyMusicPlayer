@@ -5,23 +5,25 @@ import android.content.Context
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.example.mymusicplayer.data.datastore.DataStoreAppFragmentStateSerializer
 import com.example.mymusicplayer.data.datastore.DataStoreTypes
-import com.example.mymusicplayer.data.db.AlbumsDbDataSource
-import com.example.mymusicplayer.data.db.MusicRepository
-import com.example.mymusicplayer.data.db.AlbumsRoomDataSource
 import com.example.mymusicplayer.data.permission.StoragePermissionChecker
 import com.example.mymusicplayer.data.permission.StoragePermissionCheckerImpl
-import com.example.mymusicplayer.data.remote.RemoteDataSource
-import com.example.mymusicplayer.data.remote.RemoteDataSourceFake
 import com.example.mymusicplayer.data.remote.MyMusicDataSource
 import com.example.mymusicplayer.data.remote.MyMusicDataSourceImpl
+import com.example.mymusicplayer.data.remote.RemoteDataSource
+import com.example.mymusicplayer.data.remote.RemoteDataSourceRetrofit
 import com.example.mymusicplayer.data.room.MyDatabase
+import com.example.mymusicplayer.data.room.db.AlbumsDbDataSource
+import com.example.mymusicplayer.data.room.db.AlbumsRoomDataSource
+import com.example.mymusicplayer.data.room.db.MusicRepository
 import com.example.mymusicplayer.domain.purchase.PurchaseMakeInteractor
 import com.example.mymusicplayer.domain.purchase.PurchaseMakerInteractorFake
 import com.example.mymusicplayer.domain.purchase.PurchaseStateInteractor
 import com.example.mymusicplayer.domain.purchase.PurchaseStateInteractorFake
-import com.example.mymusicplayer.presentation.*
+import com.example.mymusicplayer.presentation.viewmodel.*
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -37,8 +39,7 @@ class MyApp : Application() {
 
     private val moduleDataStore: Module
         get() = module {
-
-            factory<MyMusicDataSource> { MyMusicDataSourceImpl(get()) }
+            single<MyMusicDataSource> { MyMusicDataSourceImpl(get()) }
             single<Json> { Json }
 
             single(named(DataStoreTypes.FRAGMENT_STATE)) {
@@ -50,34 +51,32 @@ class MyApp : Application() {
             }
         }
 
-     private val dbModule: Module
-         get() = module {
-             single<AlbumsDbDataSource> { AlbumsRoomDataSource(get()) }
-
-             single {
-                 Room.databaseBuilder(
-                     get(),
-                     MyDatabase::class.java, "database-library"
-                 ).build()
-             }
-         }
-
-    /*private val remoteModule: Module
+    private val dbModule: Module
         get() = module {
-            // factory<RemoteDataSource> { params -> RemoteDataSourceRetrofit(baseUrl = params.get()) }
-            factory<RemoteDataSource> { RemoteDataSourceRetrofit() }
-        }*/
+            single<AlbumsDbDataSource> { AlbumsRoomDataSource(get()) }
 
-    private val fakeRemoteModule: Module
+            single {
+                Room.databaseBuilder(
+                    get(),
+                    MyDatabase::class.java, "database-library"
+                ).build()
+            }
+        }
+
+    private val remoteModule: Module
+        get() = module {
+            single<RemoteDataSource> { RemoteDataSourceRetrofit() }
+        }
+
+/*    private val fakeRemoteModule: Module
         get() = module {
             factory<RemoteDataSource> { RemoteDataSourceFake() }
-        }
+        }*/
 
     private val modulePurchases: Module
         get() = module {
 
-            singleOf(::PurchaseStateInteractorFake)
-            {
+            singleOf(::PurchaseStateInteractorFake) {
                 bind<PurchaseStateInteractor>()
             }
             singleOf(::PurchaseMakerInteractorFake) {
@@ -96,28 +95,35 @@ class MyApp : Application() {
     private val viewModelModule: Module
         get() = module {
             single<StoragePermissionChecker> { params -> StoragePermissionCheckerImpl(params.get()) }
-            factory { MusicRepository(get(), isCacheEnabled = true, RemoteDataSourceFake()) }
+            factory { MusicRepository(get(), isCacheEnabled = false, RemoteDataSourceRetrofit()) }
             factory { MyMusicDataSourceImpl(get()) }
             viewModelOf(::PurchaseViewModel)
-            viewModel { FragmentStateViewModel(get(named(DataStoreTypes.FRAGMENT_STATE)), applicationContext) }
+            viewModel {
+                FragmentStateViewModel(
+                    get(named(DataStoreTypes.FRAGMENT_STATE)),
+                    applicationContext
+                )
+            }
             viewModel { TracksViewModel(get()) }
             viewModel { AlbumsViewModel(get()) }
             viewModel { MyTracksViewModel(get()) }
             viewModel { MyAlbumsViewModel(get()) }
-                   }
+        }
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidContext(this@MyApp)
             modules(
-                fakeRemoteModule,
+                //fakeRemoteModule,
+                remoteModule,
                 viewModelModule,
                 modulePurchases,
                 moduleSharedPreferences,
                 dbModule,
-                moduleDataStore
+                moduleDataStore,
             )
         }
+        WorkManager.initialize(this, Configuration.Builder().build())
     }
 }

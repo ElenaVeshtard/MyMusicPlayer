@@ -2,12 +2,14 @@ package com.example.mymusicplayer.data.remote
 
 import android.content.ContentUris.withAppendedId
 import android.content.Context
+import android.media.tv.TvContract.Channels.CONTENT_TYPE
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import com.example.mymusicplayer.domain.AlbumModel
+import com.example.mymusicplayer.domain.AlbumsWithTracks
+import com.example.mymusicplayer.domain.MusicSourceType
 import com.example.mymusicplayer.domain.TrackModel
-import com.example.mymusicplayer.domain.Tracks
 
 class MyMusicDataSourceImpl(private val context: Context) :
     MyMusicDataSource {
@@ -18,6 +20,8 @@ class MyMusicDataSourceImpl(private val context: Context) :
                 MediaStore.VOLUME_EXTERNAL
             )
         } else {
+            CONTENT_TYPE
+
             MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
         }
     }
@@ -31,7 +35,7 @@ class MyMusicDataSourceImpl(private val context: Context) :
         }
     }
 
-    override suspend fun getTracks(): Tracks {
+    override suspend fun getTracks(): AlbumsWithTracks {
 
         val contentResolver = context.contentResolver!!
 
@@ -66,12 +70,22 @@ class MyMusicDataSourceImpl(private val context: Context) :
                 )
                 val image = withAppendedId(contentUriTracks, id)
 
-                result.add(TrackModel(id, artist, image.toString(), title, "", albumId.toLong()))
+                result.add(
+                    TrackModel(
+                        id,
+                        artist,
+                        image.toString(),
+                        title,
+                        "",
+                        albumId.toLong(),
+                        MusicSourceType.MY_MUSIC.number
+                    )
+                )
 
             } while (cursor.moveToNext())
             cursor.close()
         }
-        return Tracks(getAlbums()[0], result)
+        return AlbumsWithTracks(getAlbums()[0], result)
     }
 
     override suspend fun getAlbums(): List<AlbumModel> {
@@ -101,7 +115,15 @@ class MyMusicDataSourceImpl(private val context: Context) :
                     cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM)
                 )
                 val image = withAppendedId(contentUriAlbums, id)
-                result.add(AlbumModel(id, image.toString(), title, 5))
+                result.add(
+                    AlbumModel(
+                        id,
+                        image.toString(),
+                        title,
+                        5,
+                        MusicSourceType.MY_MUSIC.number
+                    )
+                )
 
             } while (cursor.moveToNext())
             cursor.close()

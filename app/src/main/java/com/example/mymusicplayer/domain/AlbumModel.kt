@@ -8,10 +8,11 @@ import kotlinx.serialization.Serializable
 @Entity(tableName = "albums")
 @Serializable
 data class AlbumModel(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Long,
     val image: String,
     val name: String,
     @SerialName("trackCount")
-    val trackCount: Int
+    val trackCount: Int,
+    var sourceType: Int
 )

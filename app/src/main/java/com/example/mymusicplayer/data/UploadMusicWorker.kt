@@ -6,7 +6,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.example.mymusicplayer.data.remote.RemoteDataSource
 import com.example.mymusicplayer.data.utils.DataKeys.Companion.LOADING_TRACKS_URL
-import com.example.mymusicplayer.view.DownloadNotification
+import com.example.mymusicplayer.presentation.view.DownloadNotification
 import okhttp3.ResponseBody
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -18,7 +18,6 @@ class UploadMusicWorker(
 ) : CoroutineWorker(appContext, params) {
 
     private val downloadNotification: DownloadNotification = DownloadNotification(appContext)
-
     override suspend fun doWork(): Result {
         setForeground(getForegroundInfo())
         val url = inputData.getString(LOADING_TRACKS_URL)
